@@ -9,7 +9,10 @@
 const char _TABLE_[] = {0x3F,0x06,0x5B,0x4F,0x66,0x6D,0x7D,0x07, 0x7F, 0x6F};
 const char _TABLED_[] = {0xBF,0x86,0xDB,0xCF,0xE6,0xED,0xFD,0x87, 0xFF, 0xEF};
 	float _M_=0;
+	float _CD1_ = 0;
 	int _control_ = 0;
+	int _CD2_ = 0;
+	
 uint8_t _STATE_ = 0;
 uint8_t _DC_ = 0;
 uint8_t _N1_;
@@ -45,8 +48,10 @@ void DISP_SHOW(float _N_){
 	}
 	if(_N_>=1000.0){
 		_M_ = _N_;
-		_control_ = (int)_N_%1;
-		if(_control_!=0){
+		_CD1_ = _N_ * 10.0;
+		_CD2_ = (int) _CD1_;
+		_control_ = _CD2_%10;
+		if(_control_>0){
 			_DC_ = 4;
 		}
 		if(_control_==0){

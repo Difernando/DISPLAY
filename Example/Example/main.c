@@ -7,8 +7,8 @@
 #define F_CPU 16000000UL
 #include <avr/io.h>
 #include "DISPLAY.h"
-float H = 5432;
-int Z = 4321;
+float H = 54.32;
+int Z = 4;
 
 int main(void)
 {	

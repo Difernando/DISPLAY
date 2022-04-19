@@ -23,11 +23,11 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
   9 .debug_frame  000000ac  00000000  00000000  00001c18  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000003de  00000000  00000000  00001cc4  2**0
+ 10 .debug_str    00000441  00000000  00000000  00001cc4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000117  00000000  00000000  000020a2  2**0
+ 11 .debug_loc    00000117  00000000  00000000  00002105  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 00000030  00000000  00000000  000021b9  2**0
+ 12 .debug_ranges 00000030  00000000  00000000  0000221c  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -101,55 +101,36 @@ Disassembly of section .text:
   a2:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
 
 000000a6 <DISP_init>:
-uint8_t _N1_;
-uint8_t _N2_;
-uint8_t _N3_;
-uint8_t _N4_;
-void DISP_init(){
-	cli();
   a6:	f8 94       	cli
-	TCCR0A |= (1<<WGM01);
   a8:	84 b5       	in	r24, 0x24	; 36
   aa:	82 60       	ori	r24, 0x02	; 2
   ac:	84 bd       	out	0x24, r24	; 36
-	TCCR0B |= (1<<CS00)|(1<<CS02);
   ae:	85 b5       	in	r24, 0x25	; 37
   b0:	85 60       	ori	r24, 0x05	; 5
   b2:	85 bd       	out	0x25, r24	; 37
-	TIMSK0 |= (1<<OCIE0A);
   b4:	ee e6       	ldi	r30, 0x6E	; 110
   b6:	f0 e0       	ldi	r31, 0x00	; 0
   b8:	80 81       	ld	r24, Z
   ba:	82 60       	ori	r24, 0x02	; 2
   bc:	80 83       	st	Z, r24
-	OCR0A = 0x09;
   be:	89 e0       	ldi	r24, 0x09	; 9
   c0:	87 bd       	out	0x27, r24	; 39
-	
-	DDRC |= (1<<0x00)|(1<<0x01)|(1<<0x02)|(1<<0x03);
   c2:	87 b1       	in	r24, 0x07	; 7
   c4:	8f 60       	ori	r24, 0x0F	; 15
   c6:	87 b9       	out	0x07, r24	; 7
-	PORTC |= (1<<0x00)|(1<<0x01)|(1<<0x02)|(1<<0x03);
   c8:	88 b1       	in	r24, 0x08	; 8
   ca:	8f 60       	ori	r24, 0x0F	; 15
   cc:	88 b9       	out	0x08, r24	; 8
-	DDRB = 0xFF;
   ce:	8f ef       	ldi	r24, 0xFF	; 255
   d0:	84 b9       	out	0x04, r24	; 4
-	PORTB = 0x00;	
   d2:	15 b8       	out	0x05, r1	; 5
-	DDRD|=(1<<0x00);
   d4:	8a b1       	in	r24, 0x0a	; 10
   d6:	81 60       	ori	r24, 0x01	; 1
   d8:	8a b9       	out	0x0a, r24	; 10
-	sei();
   da:	78 94       	sei
   dc:	08 95       	ret
 
 000000de <DISP_SHOW>:
-}
-void DISP_SHOW(float _N_){
   de:	8f 92       	push	r8
   e0:	9f 92       	push	r9
   e2:	af 92       	push	r10
@@ -162,7 +143,6 @@ void DISP_SHOW(float _N_){
   f0:	df 93       	push	r29
   f2:	6b 01       	movw	r12, r22
   f4:	7c 01       	movw	r14, r24
-	if(_N_<10.0){
   f6:	20 e0       	ldi	r18, 0x00	; 0
   f8:	30 e0       	ldi	r19, 0x00	; 0
   fa:	40 e2       	ldi	r20, 0x20	; 32
@@ -170,7 +150,6 @@ void DISP_SHOW(float _N_){
   fe:	0e 94 e0 01 	call	0x3c0	; 0x3c0 <__cmpsf2>
  102:	88 23       	and	r24, r24
  104:	9c f4       	brge	.+38     	; 0x12c <DISP_SHOW+0x4e>
-		_M_ = _N_*1000.0;
  106:	20 e0       	ldi	r18, 0x00	; 0
  108:	30 e0       	ldi	r19, 0x00	; 0
  10a:	4a e7       	ldi	r20, 0x7A	; 122
@@ -182,11 +161,8 @@ void DISP_SHOW(float _N_){
  11a:	70 93 19 01 	sts	0x0119, r23	; 0x800119 <_M_+0x1>
  11e:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <_M_+0x2>
  122:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <_M_+0x3>
-		_DC_ = 1;
  126:	81 e0       	ldi	r24, 0x01	; 1
  128:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <__data_end>
-	}
-	if(_N_>=10.0 && _N_ < 100.0){
  12c:	20 e0       	ldi	r18, 0x00	; 0
  12e:	30 e0       	ldi	r19, 0x00	; 0
  130:	40 e2       	ldi	r20, 0x20	; 32
@@ -205,7 +181,6 @@ void DISP_SHOW(float _N_){
  14c:	0e 94 e0 01 	call	0x3c0	; 0x3c0 <__cmpsf2>
  150:	88 23       	and	r24, r24
  152:	9c f4       	brge	.+38     	; 0x17a <DISP_SHOW+0x9c>
-		_M_ = _N_ *100.0;
  154:	20 e0       	ldi	r18, 0x00	; 0
  156:	30 e0       	ldi	r19, 0x00	; 0
  158:	48 ec       	ldi	r20, 0xC8	; 200
@@ -217,11 +192,8 @@ void DISP_SHOW(float _N_){
  168:	70 93 19 01 	sts	0x0119, r23	; 0x800119 <_M_+0x1>
  16c:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <_M_+0x2>
  170:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <_M_+0x3>
-		_DC_ = 2;
  174:	82 e0       	ldi	r24, 0x02	; 2
  176:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <__data_end>
-	}
-	if(_N_>=100.0 && _N_<1000.0){
  17a:	20 e0       	ldi	r18, 0x00	; 0
  17c:	30 e0       	ldi	r19, 0x00	; 0
  17e:	48 ec       	ldi	r20, 0xC8	; 200
@@ -240,7 +212,6 @@ void DISP_SHOW(float _N_){
  19a:	0e 94 e0 01 	call	0x3c0	; 0x3c0 <__cmpsf2>
  19e:	88 23       	and	r24, r24
  1a0:	9c f4       	brge	.+38     	; 0x1c8 <DISP_SHOW+0xea>
-		_M_ = _N_ * 10.0;
  1a2:	20 e0       	ldi	r18, 0x00	; 0
  1a4:	30 e0       	ldi	r19, 0x00	; 0
  1a6:	40 e2       	ldi	r20, 0x20	; 32
@@ -252,11 +223,8 @@ void DISP_SHOW(float _N_){
  1b6:	70 93 19 01 	sts	0x0119, r23	; 0x800119 <_M_+0x1>
  1ba:	80 93 1a 01 	sts	0x011A, r24	; 0x80011a <_M_+0x2>
  1be:	90 93 1b 01 	sts	0x011B, r25	; 0x80011b <_M_+0x3>
-		_DC_ = 3;
  1c2:	83 e0       	ldi	r24, 0x03	; 3
  1c4:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <__data_end>
-	}
-	if(_N_>=1000.0){
  1c8:	20 e0       	ldi	r18, 0x00	; 0
  1ca:	30 e0       	ldi	r19, 0x00	; 0
  1cc:	4a e7       	ldi	r20, 0x7A	; 122
@@ -266,17 +234,12 @@ void DISP_SHOW(float _N_){
  1d4:	0e 94 3f 03 	call	0x67e	; 0x67e <__gesf2>
  1d8:	88 23       	and	r24, r24
  1da:	5c f0       	brlt	.+22     	; 0x1f2 <DISP_SHOW+0x114>
-		_M_ = _N_;
  1dc:	c0 92 18 01 	sts	0x0118, r12	; 0x800118 <_M_>
  1e0:	d0 92 19 01 	sts	0x0119, r13	; 0x800119 <_M_+0x1>
  1e4:	e0 92 1a 01 	sts	0x011A, r14	; 0x80011a <_M_+0x2>
  1e8:	f0 92 1b 01 	sts	0x011B, r15	; 0x80011b <_M_+0x3>
-		_DC_ = 4;			
  1ec:	84 e0       	ldi	r24, 0x04	; 4
  1ee:	80 93 16 01 	sts	0x0116, r24	; 0x800116 <__data_end>
-	}
-
-		_N1_ =(int) _M_/1000;
  1f2:	80 90 18 01 	lds	r8, 0x0118	; 0x800118 <_M_>
  1f6:	90 90 19 01 	lds	r9, 0x0119	; 0x800119 <_M_+0x1>
  1fa:	a0 90 1a 01 	lds	r10, 0x011A	; 0x80011a <_M_+0x2>
@@ -290,7 +253,6 @@ void DISP_SHOW(float _N_){
  210:	73 e0       	ldi	r23, 0x03	; 3
  212:	0e 94 b1 03 	call	0x762	; 0x762 <__divmodhi4>
  216:	60 93 1d 01 	sts	0x011D, r22	; 0x80011d <_N1_>
-		_N2_ =(int) (_M_/100)%10;
  21a:	20 e0       	ldi	r18, 0x00	; 0
  21c:	30 e0       	ldi	r19, 0x00	; 0
  21e:	48 ec       	ldi	r20, 0xC8	; 200
@@ -305,7 +267,6 @@ void DISP_SHOW(float _N_){
  234:	be 01       	movw	r22, r28
  236:	0e 94 b1 03 	call	0x762	; 0x762 <__divmodhi4>
  23a:	80 93 1f 01 	sts	0x011F, r24	; 0x80011f <_N2_>
-		_N3_ =(int) (_M_/10)%10;
  23e:	20 e0       	ldi	r18, 0x00	; 0
  240:	30 e0       	ldi	r19, 0x00	; 0
  242:	40 e2       	ldi	r20, 0x20	; 32
@@ -318,12 +279,10 @@ void DISP_SHOW(float _N_){
  254:	be 01       	movw	r22, r28
  256:	0e 94 b1 03 	call	0x762	; 0x762 <__divmodhi4>
  25a:	80 93 1e 01 	sts	0x011E, r24	; 0x80011e <_N3_>
-		_N4_ =(int) _M_%10;
  25e:	c7 01       	movw	r24, r14
  260:	be 01       	movw	r22, r28
  262:	0e 94 b1 03 	call	0x762	; 0x762 <__divmodhi4>
  266:	80 93 1c 01 	sts	0x011C, r24	; 0x80011c <_N4_>
-		switch(_STATE_){
  26a:	80 91 17 01 	lds	r24, 0x0117	; 0x800117 <_STATE_>
  26e:	82 30       	cpi	r24, 0x02	; 2
  270:	09 f4       	brne	.+2      	; 0x274 <DISP_SHOW+0x196>
@@ -341,16 +300,12 @@ void DISP_SHOW(float _N_){
  288:	09 f4       	brne	.+2      	; 0x28c <DISP_SHOW+0x1ae>
  28a:	69 c0       	rjmp	.+210    	; 0x35e <DISP_SHOW+0x280>
  28c:	6e c0       	rjmp	.+220    	; 0x36a <DISP_SHOW+0x28c>
-			case 0:
-			PORTC&=~(1<<0x00);
  28e:	88 b1       	in	r24, 0x08	; 8
  290:	8e 7f       	andi	r24, 0xFE	; 254
  292:	88 b9       	out	0x08, r24	; 8
-			if(_DC_ == 1){
  294:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <__data_end>
  298:	81 30       	cpi	r24, 0x01	; 1
  29a:	41 f4       	brne	.+16     	; 0x2ac <DISP_SHOW+0x1ce>
-				PORTB = _TABLED_[_N1_];
  29c:	e0 91 1d 01 	lds	r30, 0x011D	; 0x80011d <_N1_>
  2a0:	f0 e0       	ldi	r31, 0x00	; 0
  2a2:	ee 5f       	subi	r30, 0xFE	; 254
@@ -358,8 +313,6 @@ void DISP_SHOW(float _N_){
  2a6:	80 81       	ld	r24, Z
  2a8:	85 b9       	out	0x05, r24	; 5
  2aa:	5f c0       	rjmp	.+190    	; 0x36a <DISP_SHOW+0x28c>
-			}else{
-				PORTB = _TABLE_[_N1_];
  2ac:	e0 91 1d 01 	lds	r30, 0x011D	; 0x80011d <_N1_>
  2b0:	f0 e0       	ldi	r31, 0x00	; 0
  2b2:	e4 5f       	subi	r30, 0xF4	; 244
@@ -367,24 +320,16 @@ void DISP_SHOW(float _N_){
  2b6:	80 81       	ld	r24, Z
  2b8:	85 b9       	out	0x05, r24	; 5
  2ba:	57 c0       	rjmp	.+174    	; 0x36a <DISP_SHOW+0x28c>
-			}
-			break;
-			case 1:
-			PORTC|=(1<<0x00);
  2bc:	88 b1       	in	r24, 0x08	; 8
  2be:	81 60       	ori	r24, 0x01	; 1
  2c0:	88 b9       	out	0x08, r24	; 8
-			PORTB = 0x00;
  2c2:	15 b8       	out	0x05, r1	; 5
-			PORTC&=~(1<<0x01);
  2c4:	88 b1       	in	r24, 0x08	; 8
  2c6:	8d 7f       	andi	r24, 0xFD	; 253
  2c8:	88 b9       	out	0x08, r24	; 8
-			if(_DC_ == 2){
  2ca:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <__data_end>
  2ce:	82 30       	cpi	r24, 0x02	; 2
  2d0:	41 f4       	brne	.+16     	; 0x2e2 <DISP_SHOW+0x204>
-				PORTB = _TABLED_[_N2_];
  2d2:	e0 91 1f 01 	lds	r30, 0x011F	; 0x80011f <_N2_>
  2d6:	f0 e0       	ldi	r31, 0x00	; 0
  2d8:	ee 5f       	subi	r30, 0xFE	; 254
@@ -392,8 +337,6 @@ void DISP_SHOW(float _N_){
  2dc:	80 81       	ld	r24, Z
  2de:	85 b9       	out	0x05, r24	; 5
  2e0:	44 c0       	rjmp	.+136    	; 0x36a <DISP_SHOW+0x28c>
-				}else{
-				PORTB = _TABLE_[_N2_];
  2e2:	e0 91 1f 01 	lds	r30, 0x011F	; 0x80011f <_N2_>
  2e6:	f0 e0       	ldi	r31, 0x00	; 0
  2e8:	e4 5f       	subi	r30, 0xF4	; 244
@@ -401,24 +344,16 @@ void DISP_SHOW(float _N_){
  2ec:	80 81       	ld	r24, Z
  2ee:	85 b9       	out	0x05, r24	; 5
  2f0:	3c c0       	rjmp	.+120    	; 0x36a <DISP_SHOW+0x28c>
-			}
-			break;
-			case 2:
-			PORTC|=(1<<0x01);
  2f2:	88 b1       	in	r24, 0x08	; 8
  2f4:	82 60       	ori	r24, 0x02	; 2
  2f6:	88 b9       	out	0x08, r24	; 8
-			PORTB = 0x00;
  2f8:	15 b8       	out	0x05, r1	; 5
-			PORTC&=~(1<<0x02);
  2fa:	88 b1       	in	r24, 0x08	; 8
  2fc:	8b 7f       	andi	r24, 0xFB	; 251
  2fe:	88 b9       	out	0x08, r24	; 8
-			if(_DC_ == 3){
  300:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <__data_end>
  304:	83 30       	cpi	r24, 0x03	; 3
  306:	41 f4       	brne	.+16     	; 0x318 <DISP_SHOW+0x23a>
-				PORTB = _TABLED_[_N3_];
  308:	e0 91 1e 01 	lds	r30, 0x011E	; 0x80011e <_N3_>
  30c:	f0 e0       	ldi	r31, 0x00	; 0
  30e:	ee 5f       	subi	r30, 0xFE	; 254
@@ -426,8 +361,6 @@ void DISP_SHOW(float _N_){
  312:	80 81       	ld	r24, Z
  314:	85 b9       	out	0x05, r24	; 5
  316:	29 c0       	rjmp	.+82     	; 0x36a <DISP_SHOW+0x28c>
-				}else{
-				PORTB = _TABLE_[_N3_];
  318:	e0 91 1e 01 	lds	r30, 0x011E	; 0x80011e <_N3_>
  31c:	f0 e0       	ldi	r31, 0x00	; 0
  31e:	e4 5f       	subi	r30, 0xF4	; 244
@@ -435,24 +368,16 @@ void DISP_SHOW(float _N_){
  322:	80 81       	ld	r24, Z
  324:	85 b9       	out	0x05, r24	; 5
  326:	21 c0       	rjmp	.+66     	; 0x36a <DISP_SHOW+0x28c>
-			}
-			break;
-			case 3:
-			PORTC|=(1<<0x02);
  328:	88 b1       	in	r24, 0x08	; 8
  32a:	84 60       	ori	r24, 0x04	; 4
  32c:	88 b9       	out	0x08, r24	; 8
-			PORTB = 0x00;
  32e:	15 b8       	out	0x05, r1	; 5
-			PORTC&=~(1<<0x03);
  330:	88 b1       	in	r24, 0x08	; 8
  332:	87 7f       	andi	r24, 0xF7	; 247
  334:	88 b9       	out	0x08, r24	; 8
-			if(_DC_ == 4){
  336:	80 91 16 01 	lds	r24, 0x0116	; 0x800116 <__data_end>
  33a:	84 30       	cpi	r24, 0x04	; 4
  33c:	41 f4       	brne	.+16     	; 0x34e <DISP_SHOW+0x270>
-				PORTB = _TABLED_[_N4_];
  33e:	e0 91 1c 01 	lds	r30, 0x011C	; 0x80011c <_N4_>
  342:	f0 e0       	ldi	r31, 0x00	; 0
  344:	ee 5f       	subi	r30, 0xFE	; 254
@@ -460,8 +385,6 @@ void DISP_SHOW(float _N_){
  348:	80 81       	ld	r24, Z
  34a:	85 b9       	out	0x05, r24	; 5
  34c:	0e c0       	rjmp	.+28     	; 0x36a <DISP_SHOW+0x28c>
-				}else{
-				PORTB = _TABLE_[_N4_];
  34e:	e0 91 1c 01 	lds	r30, 0x011C	; 0x80011c <_N4_>
  352:	f0 e0       	ldi	r31, 0x00	; 0
  354:	e4 5f       	subi	r30, 0xF4	; 244
@@ -469,20 +392,11 @@ void DISP_SHOW(float _N_){
  358:	80 81       	ld	r24, Z
  35a:	85 b9       	out	0x05, r24	; 5
  35c:	06 c0       	rjmp	.+12     	; 0x36a <DISP_SHOW+0x28c>
-			}
-			break;
-			case 4:
-			PORTC|=(1<<0x03);
  35e:	88 b1       	in	r24, 0x08	; 8
  360:	88 60       	ori	r24, 0x08	; 8
  362:	88 b9       	out	0x08, r24	; 8
-			PORTB = 0x00;
  364:	15 b8       	out	0x05, r1	; 5
-			_STATE_ = 0;
  366:	10 92 17 01 	sts	0x0117, r1	; 0x800117 <_STATE_>
-			break;
-		}
-}
  36a:	df 91       	pop	r29
  36c:	cf 91       	pop	r28
  36e:	ff 90       	pop	r15
@@ -496,18 +410,15 @@ void DISP_SHOW(float _N_){
  37e:	08 95       	ret
 
 00000380 <__vector_14>:
-ISR(TIMER0_COMPA_vect){
  380:	1f 92       	push	r1
  382:	0f 92       	push	r0
  384:	0f b6       	in	r0, 0x3f	; 63
  386:	0f 92       	push	r0
  388:	11 24       	eor	r1, r1
  38a:	8f 93       	push	r24
-	_STATE_++;
  38c:	80 91 17 01 	lds	r24, 0x0117	; 0x800117 <_STATE_>
  390:	8f 5f       	subi	r24, 0xFF	; 255
  392:	80 93 17 01 	sts	0x0117, r24	; 0x800117 <_STATE_>
-}
  396:	8f 91       	pop	r24
  398:	0f 90       	pop	r0
  39a:	0f be       	out	0x3f, r0	; 63
@@ -516,8 +427,8 @@ ISR(TIMER0_COMPA_vect){
  3a0:	18 95       	reti
 
 000003a2 <main>:
-float H = 5432;
-int Z = 4321;
+float H = 54.32;
+int Z = 4;
 
 int main(void)
 {	
